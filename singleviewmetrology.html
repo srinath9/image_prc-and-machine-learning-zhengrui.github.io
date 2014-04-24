@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Inertia Notes</title>
+  <title>Single View Metrology</title>
   <meta name="author" content="Zheng Rui">
 
   <link href="/rss.xml" type="application/rss+xml" rel="alternate"
@@ -1760,15 +1760,455 @@ init_mathjax();
 </form>
 
 <ul class="main-navigation">
-    <li >
+    <li class="active">
     <a href="/category/posts.html">Posts</a>
     </li>
 </ul></nav>
   <div id="main">
     <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Single View Metrology</h1>
+      <p class="meta"><time datetime="2014-03-26T00:00:00" pubdate>Mar 26, 2014</time></p>
+</header>
+
+  <div class="entry-content"><p>This computer vision project is to construct a 3D model from a single image plus some prior knowledge about the objects' coordinates in the image. It's based on this <a href="http://www.cs.cmu.edu/~ph/869/papers/Criminisi99.pdf">paper</a>. You can download the code from <a href="https://github.com/ZhengRui/Single-View-Metrology">here</a>. Here is a sample 3D model (right) built from a image (left).</p>
+<p><img width="300" alt=""desk"" title=""desk"" src="/images/desk.jpg">
+<img width="400" alt=""3Ddesk"" title=""3Ddesk"" src="/images/desk3d.png"></p>
+<p>You should first know something about concepts like <a href="http://en.wikipedia.org/wiki/Perspective_%28graphical%29">Perspective projection</a>, <a href="http://en.wikipedia.org/wiki/Pinhole_camera_model">Pinhole camera model</a>, <a href="http://en.wikipedia.org/wiki/Homogeneous_coordinates">Homogeneous coordinates</a>. A <a href="http://deltaorange.com/2012/03/08/the-truth-behind-homogenous-coordinates/">good post</a> about homogeneous coordinates, and a <a href="https://www.youtube.com/watch?v=q3turHmOWq4">good video</a> about projective geometry. Then here are some survey [<a href="http://kusemanohar.files.wordpress.com/2014/03/singleviewmetrologyfinalreport.pdf">1</a>, <a href="http://www.cs.ucf.edu/~tmoore/projects/svm/FinalReport.pdf">2</a>, <a href="http://www.mit.edu/~sysun/ComputerVision/SVM.pdf">3</a>] about svm. Check the following links to get a sense of single view metrology:</p>
 <ul>
-    <li><a href="/category/posts.html">Posts</a></li>
+<li><a href="http://ihome.ust.hk/~yyuanad/SVM/index.html">Zheng Amin, Yuan Yuan</a></li>
+<li><a href="http://ihome.ust.hk/~hyangac/SVM/index.html">HAIYAN YANG</a></li>
+<li><a href="http://www.cs.cornell.edu/courses/CS4670/2012fa/projects/p4/final_artifacts/Submissions/myw9/webpage/index.htm">Michael Wu</a></li>
+<li><a href="http://www.cs.cmu.edu/~ph/869/src/asst3/asst3.html">CMU: Image-Based Modeling and Rendering 13 Assignment3</a> and <a href="http://www.cs.cmu.edu/~ph/869/results/asst3_results.html">Best Results</a></li>
+<li><a href="http://www.cs.cornell.edu/courses/CS4670/2012fa/projects/p4/index.html">Cornell: CS4670/5670 computer vision Fall 2012</a>. The design of my user interaction part comes from the experience of using their svm tool.</li>
 </ul>
+<p>The tool i used to view .vrml file is <a href="http://castle-engine.sourceforge.net/view3dscene.php">view3dscene</a> under ubuntu12.04. I highly recommend this tool.</p>
+<h3>How to calculate</h3>
+<h4>vanishing point</h4>
+<p>Vanishing point is easy to understand, parallel lines in one direction will ends up on the vanishing point at infinity. Basically it needs you to manually specify two or more parallel lines (in $X$ direction and $Y$ direction) in the image and calculate their common intersection point (get $X$ vanishing point and $Y$ vanishing point respectively).</p>
+<p>Mathmatically, to calculate a common intersection point of multiple parallel lines, it involves solving an over determined equation array problem (# of equations greater than # of variables). You can use <em>Robert T Collins</em> method, this will make it transform into a non-overdetermined problem, which is very easy to solve, the basic idea is (the following picture was originally an email from Collins to Steve Seitz):</p>
+<p><img width="500" alt=""collins"" title=""collins"" src="/images/collins.png">
+<img width="500" alt=""collins2"" title=""collins2"" src="/images/collins2.png"></p>
+<p>After get the $M$ matrix, i recommend using <a href="http://eigen.tuxfamily.org/dox/GettingStarted.html">Eigen3</a> package to solve the eigen values problem. Also in the other part of this project, i use Eigen3 package to manipulate matrix operations and calculate their eigen values, incluing calculating the homography matrix and $\alpha_z$.</p>
+<ul>
+<li>After load a picture, right mouse for drugging, wheel for zooming. "Edit"-"Rescale" is for scaling to the original image size.</li>
+<li>"Edit"-"XLines", then left click to choose the parallel lines in $X$ direction (shown with read endpoints and lines).</li>
+</ul>
+<p><img width="400" alt=""x parallel lines"" title=""x parallel lines"" src="/images/xlines.png"></p>
+<p><strong><em>"Alt+d" to delete previous choosen point, "Ctrl+LeftClick" to choose one of the previous points which is under the cursor.</em></strong></p>
+<ul>
+<li>"Calculation"-"XVPoint", calculate the x vanishing point, output:</li>
+</ul>
+<!-- {% img /images/xvp.png 400 "x vanishing point" %} -->
+
+<pre>
+Please pick up endpoints of lines pointing in X direction
+
+------------------------------------------------
+1.18115e-06    2.3329e-06    -0.00153243    
+2.3329e-06    4.61483e-06    -0.00301752    
+-0.00153243    -0.00301752    2    
+
+ Eigen Values: 
+-3.55187e-17
+ 6.91139e-08
+     2.00001
+
+ Eigen Vectors: 
+   0.948123    0.317904 0.000766213
+  -0.317905    0.948121  0.00150876
+0.000246823  0.00167407   -0.999999
+
+Vanishing point position: (3841.3, -1287.98)
+------------------------------------------------
+</pre>
+
+<ul>
+<li>Repeat the same step to get the y vanishing point (green endpoints and lines).</li>
+</ul>
+<p><img width="400" alt=""y parallel lines"" title=""y parallel lines"" src="/images/ylines.png">
+<!-- <img width="400" alt=""y vanishing point"" title=""y vanishing point"" src="/images/yvp.png"> --></p>
+<pre>
+Please pick up endpoints of lines pointing in Y direction
+
+------------------------------------------------
+6.30766e-05    -8.30239e-05    0.0106216    
+-8.30239e-05    0.000109337    -0.0138698    
+0.0106216    -0.0138698    2    
+
+ Eigen Values: 
+-2.49691e-16
+ 1.98177e-05
+     2.00015
+
+ Eigen Vectors: 
+    0.814622     0.579968   0.00531067
+    0.579992    -0.814593  -0.00693469
+-0.000304136  -0.00872929     0.999962
+
+Vanishing point position: (-2678.48, -1907.01)
+------------------------------------------------
+</pre>
+
+<h4>homography matrix</h4>
+<p>Basically, i use the method in this <a href="http://ezekiel.vancouver.wsu.edu/~cs330/projects/homography/homography.pdf">file</a> to calculate the homography matrix.
+It involves LU decomposition which can be calculated using Eigen3 (I have tried to implement by myself, but the performance is bad).</p>
+<p>The complete projection matrix $P$ which projects a 3D(real world) homogeneous coordinate $(X,Y,Z,1)^{T}$ to a 2D(image pixel) homogeneous coordinate $(U,V,1)^{T}$ is a $3\times4$ matrix, which is actually $[\alpha_xV_x, \alpha_yV_y, \alpha_zV_z, O]$, where $V_x$, $V_y$, $V_z$ are the homogeneous coordinates for $x,y,z$ vanishing points, $O$ is the homogeneous coordinates for the origin. When we are talking about plane $Z=0$, $P$'s third column can be ignored because $Z$ is always equal to 0, so $P$ becomes the homograph matrix $H$, which is $[\alpha_xV_x, \alpha_yV_y, O]$.</p>
+<p>Let's say we have a 3D homogenous cooridinate $(X,Y,0,1)^T$ and its corresponding 2D homogenous coordinate $(U,V,1)^T$, then $H$ applied on $(X,Y,1)^T$ should give $(u,v,w)^T$ where $\frac{u}{w} = U$, and $\frac{v}{w} = V$, so $H$ actually have only 8 independant parameters and each 3D-2D coordinate pair contributes two equations. So theoritically we only need 4 pairs to solve these parameters. Now if we already have $V_x$ and $V_y$, then we actually have only 4 parameters $\alpha_x$, $\alpha_y$, and 2 in $O$ undetermined, so if given the vanishing points in $X$ and $Y$ direction, we need 2 more cooridinate pairs (they should not be colinear with any vanishing point) to calculate the left 4 parameters (which in total, still 4 pairs to determine $H$, 2 vanishing points plus 2 extra pairs, actually using the 2 vanishing points and 2 extra pairs which are not colinear with any vanishing point, we can get another 2 extra pairs). Actually $\alpha$ indicates the scale (or decreasing speed) in that direction, the vanishing point in that direction and 2 extra pairs which are colinear with the vanishing point will determine the scale, which is $\alpha$. </p>
+<p>Anyway, there are 3 ways to calculate $H$:</p>
+<ol>
+<li>4 non-colinear coordinate pairs </li>
+<li>$X$ and $Y$ vanishing points plus 2 more coordinate pairs which are not colinear with any vanishing point</li>
+<li>$X$ and $Y$ vanishing points plus other coordinate pairs which at least 2 pairs are colinear with $X$ vanishing point and 2 paris are colinear with $Y$ vanishing point, they can share one pair like the origin </li>
+</ol>
+<p>Using which way to calculate $H$ depends on what you believe, if you think you can calculate the vanishing point very accurately, then use the vanishing point, if you think you are confident about the real 3D coordinate of some point in the image, then don't use vanishing point. Of course you can use all of them which are over determined, but don't worry, LU decomposition and Eigen3 will handle this. </p>
+<ul>
+<li>"Edit"-"RPlane", choose a point in the image (black point) and specify its 3D coordinate, don't forget to use "Ctrl+LeftClick" to choose existed points and "Alt+d" to undo</li>
+</ul>
+<p><img width="400" alt=""coordinate pair"" title=""coordinate pair"" src="/images/homopair.png"></p>
+<ul>
+<li>"Calculation"-"Homography", calculate the homography matrix, it will ask you whether you wanna use $X$ and $Y$ vanishing points or not (if they are already calculated in previous step), you can choose based on your requirement</li>
+</ul>
+<p><img width="400" alt=""calculate homograph matrix"" title=""calculate homograph matrix"" src="/images/homo.png"></p>
+<p>sample output (i choosed using the vanishing point here):</p>
+<pre>
+Please specify 4 or more points on Z=0 plane (including vanishing points on this plane's vanishing line if they can be calculated and will be taken into account) and make sure these points could form a polygon
+
+ A: 
+ 393.366  400.799        1        0        0        0       -0       -0
+       0        0        0  393.366  400.799        1       -0       -0
+ 617.494  291.022        1        0        0        0 -617.494 -291.022
+       0        0        0  617.494  291.022        1       -0       -0
+ 164.839  229.112        1        0        0        0       -0       -0
+       0        0        0  164.839  229.112        1 -164.839 -229.112
+ 379.584  139.887        1        0        0        0 -379.584 -139.887
+       0        0        0  379.584  139.887        1 -379.584 -139.887
+       0        0        0   3841.3 -1287.98        1        0        0
+       0        0        0        0        0        0   3841.3 -1287.98
+-2678.48 -1907.01        1        0        0        0        0        0
+       0        0        0        0        0        0 -2678.48 -1907.01
+
+ b: 
+ 0
+ 0
+ 1
+ 0
+ 0
+ 1
+ 1
+ 1
+ 0
+-1
+ 0
+-1
+
+ Rank of [A b]: 
+8
+
+ x: 
+  0.00308069
+ -0.00410059
+    0.431674
+    -0.00195
+ -0.00398125
+     2.36275
+-5.74491e-05
+  0.00060507
+
+ A*x: 
+-2.22045e-16
+-2.22045e-16
+           1
+-1.77296e-10
+ 4.75542e-12
+           1
+    0.964602
+      1.0028
+           0
+          -1
+ 4.44089e-16
+          -1
+
+ Homography matrix (from image to scene): 
+  0.00308069  -0.00410059     0.431674
+    -0.00195  -0.00398125      2.36275
+-5.74491e-05   0.00060507            1
+
+ Homography matrix (from scene to image): 
+  218.915   -176.47   322.454
+  -73.402  -125.643   328.547
+0.0569898 0.0658845  0.819731
+------------Point 1 ------------- 
+ ImageCoord: 
+393.366
+400.799
+      1
+
+ HomoMat * ImageCoord: 
+-1.82017e-16
+-3.64034e-16
+           1
+
+ SceneCoord: 
+0
+0
+1
+------------Point 2 ------------- 
+ ImageCoord: 
+617.494
+291.022
+      1
+
+ HomoMat * ImageCoord: 
+           1
+-1.55439e-10
+           1
+
+ SceneCoord: 
+1
+0
+1
+------------Point 3 ------------- 
+ ImageCoord: 
+164.839
+229.112
+      1
+
+ HomoMat * ImageCoord: 
+4.21147e-12
+          1
+          1
+
+ SceneCoord: 
+0
+1
+1
+------------Point 4 ------------- 
+ ImageCoord: 
+379.584
+139.887
+      1
+
+ HomoMat * ImageCoord: 
+0.966694
+ 1.00263
+       1
+
+ SceneCoord: 
+1
+1
+1
+------------Point 5 ------------- 
+ ImageCoord: 
+  3841.3
+-1287.98
+       1
+
+ HomoMat * ImageCoord: 
+     17.547
+4.44089e-16
+          0
+
+ SceneCoord: 
+1
+0
+0
+------------Point 6 ------------- 
+ ImageCoord: 
+-2678.48
+-1907.01
+       1
+
+ HomoMat * ImageCoord: 
+ 4.44089e-16
+     15.1781
+-2.22045e-16
+
+ SceneCoord: 
+0
+1
+0
+</pre>
+
+<p><em>Note: HomoMat here is the inverse of $H$</em> </p>
+<h4>$\alpha_z$</h4>
+<p>To calculate $\alpha_z$ is to determine the third column in $P$, you need to first calculate the $Z$ vanishing point, and then sepecify 2 extra coordinatepairs which are colinear with $Z$ vanishing point (which means they have the same $X$ and $Y$ coordinates, and think of how to calculate $H$ with the 3rd method). The following is the derivation for calculation of $\alpha_z$ (which is $\gamma$) from two scene points $(X,Y,Z)$ and $(X,Y,Z+\delta Z)$, i use the notation which should be the same as those derivation in the materials i mentioned above, but here the two points $b$ and $t$ can be both off plane.</p>
+<p><img width="400" alt=""derivation of alpha_z"" title=""derivation of alpha_z"" src="/images/SVMderivation.png"></p>
+<ul>
+<li>"Edit"-"Zlines" to choose z parallel lines, then "Calculation"-"ZVpoint" to calculate $Z$ vanishing point (blue lines and endpoints)</li>
+</ul>
+<p><img width="400" alt=""z parallel lines"" title=""z parallel lines"" src="/images/zlines.png"></p>
+<pre>
+Please pick up endpoints of lines pointing in Z direction
+
+------------------------------------------------
+5.34101e-05    -2.71212e-06    -0.0107707    
+-2.71212e-06    2.05445e-07    0.000310135    
+-0.0107707    0.000310135    3    
+
+ Eigen Values: 
+2.30787e-12
+1.49136e-05
+    3.00004
+
+ Eigen Vectors: 
+   -0.107822    -0.994164   0.00359024
+    -0.99417     0.107822 -0.000103379
+-0.000284333  -0.00358046    -0.999994
+
+Vanishing point position: (379.211, 3496.5)
+------------------------------------------------
+</pre>
+
+<ul>
+<li>"Edit"-"RPlane" to specify 2 offplane scene points, the thin white line is connected to the $Z$ vanishing point</li>
+</ul>
+<p><img width="400" alt=""offplane point1"" title=""offplane point1"" src="/images/zoffplane.png"></p>
+<ul>
+<li>After specify the first scene point's coordinate, there will be a projected point on $Z=0$ plane and you can either choose that point as the second point or choose another off plane point if you like. Don't forget "Ctrl+LeftClick" and "Alt+d" if needed.</li>
+</ul>
+<p><img width="400" alt=""offplane point2"" title=""offplane point2"" src="/images/zoffplane2.png"></p>
+<ul>
+<li>"Calculation"-"Alpha" to calculate $\alpha_z$</li>
+</ul>
+<pre>
+++++++++++++ All 4 Check ++++++++++++++
+ P1: 
+  218.915
+  -73.402
+0.0569898
+
+ P2: 
+  -176.47
+ -125.643
+0.0658845
+
+ O: 
+ 322.454
+ 328.547
+0.819731
+
+ Vz: 
+379.211
+ 3496.5
+      1
+
+ b: 
+393.366
+400.799
+      1
+
+ t: 
+392.794
+542.022
+      1
+
+ z: 0 deltaz: -1
+
+ gammaZ: 
+ -0.0391533
+
+ Projection Matrix from scene to image: 
+   218.915    -176.47   -14.8474    322.454
+   -73.402   -125.643     -136.9    328.547
+ 0.0569898  0.0658845 -0.0391533   0.819731
+</pre>
+
+<ul>
+<li>After calculate $Z$ vanishing point and $\alpha_z$, we actually get the projection matrix $P$, we can test it by "Calculation"-"Scene2Image", input the 3D scene coordinate,</li>
+</ul>
+<p><img width="400" alt=""scene to image"" title=""scene to image"" src="/images/scene2img.png"></p>
+<p>it then shows the corresponding point in the image:</p>
+<p><img width="400" alt=""scene to image result"" title=""scene to image result"" src="/images/scene2imgres.png"></p>
+<h3>How to generate texture patches and build 3D model (vrml file)</h3>
+<p>First you need to enter "Edit"-"PtPool" state, pick many points of interest in the image and using the later mentioned co-plane or co-z methods to get their 3D scene coordinates, this step will save all the points of interest in a pool, then enter "Edit"-"Polygon" state and choose points from the pool to form a polygon and use "Calculation"-"Texture" or ("Alt+p") to calculate the patches of this polygon, there are also bounding-box method or polygon method to calculate the patches. You can use "Alt+s" to switch between co-plane and co-z method if you are in "PtPool" state, or switch between bounding-box and polygon method if you are in "Polygon" (making patches using points in pool) state.</p>
+<p>Something to clarify:</p>
+<p>To get scene coordinate ("Edit"-"PtPool"):</p>
+<ol>
+<li>co-plane method, when the previous point and next point are on the same plane, they share the same homography matrix</li>
+<li>co-z method, when the previous point and next point are colinear in z direction, the homograph matrix will be updated from $[P_1, P_2, O_z]$ to $[P_1, P_2, O_z+\gamma V_z\delta z]$, actually in general, the homography matrix for plane $Z=z$ can be written as $[P_1, P_2, O_0+\gamma V_zz]$</li>
+</ol>
+<p>Start from a point in $Z=0$ plane, default is co-plane method, then select points of interest on this plane, when you want to jump to another $Z=z$ plane, first "Alt+s" to switch the mode, then select the projected point on the new plane (with help of the thin white line), after selection of the first point on the new plane, the method will be automatically switched back to co-plane method. Repeat this process untill you select all the points of interest. Dont forget the usage of "Alt+d" and "Ctrl+LeftClick" when needed. Also you can press "=" to enlarge the gap on the white line, or press "-" to make it smaller.</p>
+<p><video width='240' height='180' preload='none' controls poster='/images/ptpool.png'><source src='/videos/ptpool.ogv' type='video/ogg; codecs=theora, vorbis'></video></p>
+<p>output:
+<pre>
+Please pick up all the points which will be used to form polygons later, start from one point in the reference plane. 
+You can change method state afterwards. Begin with co-plane methods. "Alt + S" could switch between co-plane and vertical methods.
+Scene Coordinates: (-1.82017e-16, -3.64034e-16, 0)
+Scene Coordinates: (1, -1.55439e-10, 0)
+Scene Coordinates: (0.966694, 1.00263, 0)
+Scene Coordinates: (4.21147e-12, 1, 0)
+Scene Coordinates: (-1.82017e-16, -3.64034e-16, 0)
+Scene Coordinates: (1, -1.55439e-10, 0)
+Please select a previous point (Ctrl + LClick) first !
+Scene Coordinates: (-1.82017e-16, -3.64034e-16, 0)
+Scene Coordinates: (1, -1.55439e-10, 0)
+Scene Coordinates: (0.966694, 1.00263, 0)
+Please select a previous point (Ctrl + LClick) first !
+Scene Coordinates: (0.966694, 1.00263, 0)
+Scene Coordinates: (4.21147e-12, 1, 0)
+Scene Coordinates: (4.21147e-12, 1, -1.00038)
+Scene Coordinates: (2.66999e-05, -0.000287184, -1.00038)
+Scene Coordinates: (0.999159, -0.000287184, -1.00038)
+Scene Coordinates: (1.10566, 0.0653924, -1.00038)
+Scene Coordinates: (1.10334, -0.368431, -1.00038)
+Scene Coordinates: (0.847286, -0.541693, -1.00038)
+Scene Coordinates: (-0.846693, 0.507535, -1.00038)
+Scene Coordinates: (-0.191485, 1.26989, -1.00038)
+Scene Coordinates: (0.0377504, 1.15913, -1.00038)
+Scene Coordinates: (0.111889, 1.16806, -1.00038)
+Scene Coordinates: (0.186364, 1.23369, -1.00038)
+</pre></p>
+<p>To get the patches ("Edit"-"Polygon"):</p>
+<p>The problem in this step is given some nearlly co-plane 3D scene coordinates, we want to map them back to the image and using some interpolation method to get the RGB value of the scene points between pixels. My method is first calculate the plane equation, then calculate the rotation matrix which could rotate the plane into a $Z=z$ plane, and apply this rotation operation to all the scene points and get the coordinates of their corresponding points on $Z=z$ plane, then we find the polygon formed by these points (polygon method) or a bounding box (boundingbox method), to iterate the polygon area or the bounding box area, we need to set a scale which indicates the granularity of the patch (you need to adjust the scale value in makePatch() function according to the scene coordinates you input), for example, a 1 by 1 scene patch will have 100 by 100 points inside if you set scale to be 0.01.</p>
+<p>How to get the RGB value of a point inside the polygon or boundingbox, i will first rotate it from $XY$ plane to 3D scene position, then use projection matrix $P$ to find its scene pixel, then use <a href="http://en.wikipedia.org/wiki/Bilinear_interpolation">Bilinear Interpolation</a> method to get its RGB value.</p>
+<p>This video show we first use bounding box method to create a rectangle patch for 3 selected points, then "Alt+s" switch to polygon method and get a triangular patch from 3 points, next we show how to create a more complex polygon patch (when using polygon method, the points should be selected on clock-wise or counter clock-wise order). Also you can pick some points which are some tilted plane, it doesn't have to be horizontal or vertical plane.  </p>
+<p><video width='240' height='180' preload='none' controls poster='/images/patch.png'><source src='/videos/patch.ogv' type='video/ogg; codecs=theora, vorbis'></video></p>
+<p>output:</p>
+<pre>
+Please select at least 3 points for each plane and make patch by press "Alt + P" or click "Texture" in "Calculation" menu, you can change TextureMethod (BoundingBox method or Polygon method) with "Alt + S", default: BoundingBox method
+
+ Plane coefficients: 
+ 1.55483e-10
+     1.00029
+-0.000287158
+-3.33004e-16
+
+ Plane coefficients: 
+ 1.55483e-10
+     1.00029
+-0.000287158
+-3.33004e-16
+
+ Plane coefficients: 
+ 2.41128e-14
+-3.58101e-13
+    -2653.23
+     2654.23
+</pre>
+
+<p>To make vrml model:</p>
+<p>It takes me a long time to figure out what is the grammer of vrml model, the most simplest form is like the <a href="http://www.cs.cornell.edu/courses/CS4670/2012fa/projects/p4/final_artifacts/Submissions/myw9/webpage/index.htm">Bookshelf</a> example, by clicking "Edit"-"Save" function, the tool will combine all the patches together and create the .wrl file automatically.</p>
+<p><strong><em> When making point pools and generating patches, it's better to use incremental methods, which means add some points to the pool, then generate some patches using the newly add points, then add some other points to the pool and generate other patches. It's important to check at each time whether the scene coordinates of newly add points are acceptable, especially when you are jumping to another plane, because if there are some errors at some point, it will leads to incrementally larger error for the later added points. Basically, in this process, we have to be very careful and patient and make sure different paths to some point is consistent in an acceptable level. </em></strong></p>
+<h3>Paint Sample</h3>
+<p>For irregular object as the man and lion in this paint sample, when generating patches, you can first pick a rectangle which is big enough to hold the object, then use the <a href="iscissor.html">intelligent scissor tool</a> to pick out the object from old patch and use the picked out image as new patch.</p>
+<p><img width="500" alt=""paint vrml model"" title=""paint vrml model"" src="/images/paintwrl.png"></p>
+<p>All the original pictures, generated patches and vrml models can be downloaded from <a href="https://www.dropbox.com/s/04rv40bp68ieovm/TestSVMModels.zip">here</a>. </p></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">Zheng Rui</span>
+  </span>
+<time datetime="2014-03-26T00:00:00" pubdate>Mar 26, 2014</time>  <span class="categories">
+    <a class="category" href="/tag/project.html">project</a>
+  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
 <aside class="sidebar">
   <section>
     <h1>Recent Posts</h1>
