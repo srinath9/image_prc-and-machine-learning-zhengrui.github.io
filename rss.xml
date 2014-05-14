@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Inertia Notes</title><link>/</link><description>Things are understandable</description><atom:link href="/rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 13 May 2014 00:00:00 +0800</lastBuildDate><item><title>Dense Light Stereo</title><link>/denselightstereo.html</link><description>&lt;p&gt;This computer vision project is to build 3D model of objects based on dense light images, code can be downloaded from &lt;a href="https://github.com/ZhengRui/Dense-Light-Stereo"&gt;here&lt;/a&gt;, for the description and relevant papers check README in the code, here only shows the results.&lt;/p&gt;
+&lt;p&gt;Smoother parameter $\sigma$ can not be too large, either too small. The larger, it will have no smooth effect, the smaller, it will be over smoothed.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -59,8 +60,7 @@
 &lt;td&gt;&lt;img width="200" src="/images/data09_stereo.png"&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;$\sigma$ can not be too large, either too small. The larger, it will have no smooth effect, the smaller, it will be over smoothed.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Tue, 13 May 2014 00:00:00 +0800</pubDate><guid>tag:,2014-05-13:denselightstereo.html</guid><category>project</category></item><item><title>Cabspotting data visualization</title><link>/cabspottingvis.html</link><description>&lt;p&gt;
+&lt;/table&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Tue, 13 May 2014 00:00:00 +0800</pubDate><guid>tag:,2014-05-13:denselightstereo.html</guid><category>project</category></item><item><title>Cabspotting data visualization</title><link>/cabspottingvis.html</link><description>&lt;p&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h3 id="tools-and-libraries-may-envolved"&gt;Tools and Libraries may envolved:&lt;/h3&gt;
 &lt;ul&gt;
