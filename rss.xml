@@ -60,7 +60,37 @@
 &lt;td&gt;&lt;img width="200" src="/images/data09_stereo.png"&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Tue, 13 May 2014 00:00:00 +0800</pubDate><guid>tag:,2014-05-13:denselightstereo.html</guid><category>project</category></item><item><title>Cabspotting data visualization</title><link>/cabspottingvis.html</link><description>&lt;p&gt;
+&lt;/table&gt;&lt;script type= "text/javascript"&gt;
+    if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+        var mathjaxscript = document.createElement('script');
+        mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+        mathjaxscript.type = 'text/javascript';
+        mathjaxscript.src = 'https:' == document.location.protocol
+                ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+                : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+        mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" +
+            "    config: ['MMLorHTML.js']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    displayAlign: 'center'," +
+            "    displayIndent: '0em'," +
+            "    showMathMenu: true," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true," +
+            "        preview: 'TeX'," +
+            "    }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+    }
+&lt;/script&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Tue, 13 May 2014 00:00:00 +0800</pubDate><guid>tag:,2014-05-13:denselightstereo.html</guid><category>project</category></item><item><title>Cabspotting data visualization</title><link>/cabspottingvis.html</link><description>&lt;p&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;h3 id="tools-and-libraries-may-envolved"&gt;Tools and Libraries may envolved:&lt;/h3&gt;
 &lt;ul&gt;
@@ -3425,7 +3455,37 @@ Pixel node graph:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;Note&lt;/em&gt;&lt;/strong&gt;: &lt;strong&gt;Better delete with reverse order, from nearest to oldest segments, other wise when "save" in last step, it will have problem because the polygon is formed assumed that the segments is clock wise or counter clock wise sorted.&lt;/strong&gt; Of course i could sort the segments before forming the polygon so that the segment can be deleted arbitrarily, but now i haven't implement the sort function.&lt;/p&gt;
 &lt;p&gt;You can press "F" or click 4 to enter scissoring mode again, and at last if you think it should be closed, press &lt;strong&gt;"Ctrl"+"B", the cursor will go back to the first seed point&lt;/strong&gt;. Then press "F", quit from the scissoring mode and you can save the cutted part.&lt;/p&gt;
 &lt;p&gt;Here is a composite&lt;/p&gt;
-&lt;p&gt;&lt;img width="600" src="/images/iscissorcomposite.png"&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Wed, 26 Mar 2014 00:00:00 +0800</pubDate><guid>tag:,2014-03-26:iscissor.html</guid><category>project</category></item><item><title>Single View Metrology</title><link>/singleviewmetrology.html</link><description>&lt;p&gt;This computer vision project is to construct a 3D model from a single image plus some prior knowledge about the objects' coordinates in the image. It's based on this &lt;a href="http://www.cs.cmu.edu/~ph/869/papers/Criminisi99.pdf"&gt;paper&lt;/a&gt;. You can download the code from &lt;a href="https://github.com/ZhengRui/Single-View-Metrology"&gt;here&lt;/a&gt;. Here is a sample 3D model (right) built from a image (left).&lt;/p&gt;
+&lt;p&gt;&lt;img width="600" src="/images/iscissorcomposite.png"&gt;&lt;/p&gt;&lt;script type= "text/javascript"&gt;
+    if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+        var mathjaxscript = document.createElement('script');
+        mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+        mathjaxscript.type = 'text/javascript';
+        mathjaxscript.src = 'https:' == document.location.protocol
+                ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+                : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+        mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" +
+            "    config: ['MMLorHTML.js']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    displayAlign: 'center'," +
+            "    displayIndent: '0em'," +
+            "    showMathMenu: true," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true," +
+            "        preview: 'TeX'," +
+            "    }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+    }
+&lt;/script&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Wed, 26 Mar 2014 00:00:00 +0800</pubDate><guid>tag:,2014-03-26:iscissor.html</guid><category>project</category></item><item><title>Single View Metrology</title><link>/singleviewmetrology.html</link><description>&lt;p&gt;This computer vision project is to construct a 3D model from a single image plus some prior knowledge about the objects' coordinates in the image. It's based on this &lt;a href="http://www.cs.cmu.edu/~ph/869/papers/Criminisi99.pdf"&gt;paper&lt;/a&gt;. You can download the code from &lt;a href="https://github.com/ZhengRui/Single-View-Metrology"&gt;here&lt;/a&gt;. Here is a sample 3D model (right) built from a image (left).&lt;/p&gt;
 &lt;p&gt;&lt;img width="300" alt=""desk"" title=""desk"" src="/images/desk.jpg"&gt;
 &lt;img width="400" alt=""3Ddesk"" title=""3Ddesk"" src="/images/desk3d.png"&gt;&lt;/p&gt;
 &lt;p&gt;You should first know something about concepts like &lt;a href="http://en.wikipedia.org/wiki/Perspective_%28graphical%29"&gt;Perspective projection&lt;/a&gt;, &lt;a href="http://en.wikipedia.org/wiki/Pinhole_camera_model"&gt;Pinhole camera model&lt;/a&gt;, &lt;a href="http://en.wikipedia.org/wiki/Homogeneous_coordinates"&gt;Homogeneous coordinates&lt;/a&gt;. A &lt;a href="http://deltaorange.com/2012/03/08/the-truth-behind-homogenous-coordinates/"&gt;good post&lt;/a&gt; about homogeneous coordinates, and a &lt;a href="https://www.youtube.com/watch?v=q3turHmOWq4"&gt;good video&lt;/a&gt; about projective geometry. Then here are some survey [&lt;a href="http://kusemanohar.files.wordpress.com/2014/03/singleviewmetrologyfinalreport.pdf"&gt;1&lt;/a&gt;, &lt;a href="http://www.cs.ucf.edu/~tmoore/projects/svm/FinalReport.pdf"&gt;2&lt;/a&gt;, &lt;a href="http://www.mit.edu/~sysun/ComputerVision/SVM.pdf"&gt;3&lt;/a&gt;] about svm. Check the following links to get a sense of single view metrology:&lt;/p&gt;
@@ -3847,4 +3907,34 @@ Please select at least 3 points for each plane and make patch by press "Alt + P"
 &lt;h3&gt;Paint Sample&lt;/h3&gt;
 &lt;p&gt;For irregular object as the man and lion in this paint sample, when generating patches, you can first pick a rectangle which is big enough to hold the object, then use the &lt;a href="iscissor.html"&gt;intelligent scissor tool&lt;/a&gt; to pick out the object from old patch and use the picked out image as new patch.&lt;/p&gt;
 &lt;p&gt;&lt;img width="500" alt=""paint vrml model"" title=""paint vrml model"" src="/images/paintwrl.png"&gt;&lt;/p&gt;
-&lt;p&gt;All the original pictures, generated patches and vrml models can be downloaded from &lt;a href="https://www.dropbox.com/s/04rv40bp68ieovm/TestSVMModels.zip"&gt;here&lt;/a&gt;. &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Wed, 26 Mar 2014 00:00:00 +0800</pubDate><guid>tag:,2014-03-26:singleviewmetrology.html</guid><category>project</category></item></channel></rss>
+&lt;p&gt;All the original pictures, generated patches and vrml models can be downloaded from &lt;a href="https://www.dropbox.com/s/04rv40bp68ieovm/TestSVMModels.zip"&gt;here&lt;/a&gt;. &lt;/p&gt;&lt;script type= "text/javascript"&gt;
+    if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+        var mathjaxscript = document.createElement('script');
+        mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+        mathjaxscript.type = 'text/javascript';
+        mathjaxscript.src = 'https:' == document.location.protocol
+                ? 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+                : 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+        mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+            "MathJax.Hub.Config({" +
+            "    config: ['MMLorHTML.js']," +
+            "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+            "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+            "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+            "    displayAlign: 'center'," +
+            "    displayIndent: '0em'," +
+            "    showMathMenu: true," +
+            "    tex2jax: { " +
+            "        inlineMath: [ ['$','$'] ], " +
+            "        displayMath: [ ['$$','$$'] ]," +
+            "        processEscapes: true," +
+            "        preview: 'TeX'," +
+            "    }, " +
+            "    'HTML-CSS': { " +
+            "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+            "    } " +
+            "}); ";
+        (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+    }
+&lt;/script&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Zheng Rui</dc:creator><pubDate>Wed, 26 Mar 2014 00:00:00 +0800</pubDate><guid>tag:,2014-03-26:singleviewmetrology.html</guid><category>project</category></item></channel></rss>
